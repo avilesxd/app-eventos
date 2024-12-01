@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { supabase } from "../utils/supabase/supabaseClient"; // Asegúrate de que la ruta sea correcta
 
 const CrearEvento = () => {
   const [formData, setFormData] = useState({
@@ -8,15 +9,40 @@ const CrearEvento = () => {
     tipo: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí conectarás con Supabase para insertar el evento
-    console.log("Evento creado:", formData);
-    alert("Evento creado exitosamente!");
+    setLoading(true);
+
+    try {
+      // Inserción de datos en la tabla "eventos"
+      const { error } = await supabase
+        .from("eventos") // Nombre de la tabla en la base de datos
+        .insert([
+          {
+            nombre: formData.nombre,
+            lugar: formData.lugar,
+            fecha: formData.fecha,
+            tipo: formData.tipo,
+          },
+        ]);
+
+      if (error) throw new Error(error.message);
+
+      alert("Evento creado exitosamente!");
+      // Limpiar formulario tras crear el evento
+      setFormData({ nombre: "", lugar: "", fecha: "", tipo: "" });
+    } catch (error) {
+      console.error("Error al crear el evento:", error.message);
+      alert("Hubo un error al crear el evento. Por favor, inténtalo nuevamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -87,8 +113,9 @@ const CrearEvento = () => {
           <button
             type="submit"
             className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-300"
+            disabled={loading}
           >
-            Crear Evento
+            {loading ? "Creando evento..." : "Crear Evento"}
           </button>
         </div>
       </form>

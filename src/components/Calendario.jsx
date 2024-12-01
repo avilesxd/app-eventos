@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { supabase } from "../utils/supabase/supabaseClient";
 
 const Calendario = () => {
   const [eventos, setEventos] = useState([]);
 
   useEffect(() => {
-    // Aquí conectarás con Supabase para obtener eventos
     const fetchEventos = async () => {
-      console.log("Fetching events...");
-      setEventos([
-        {
-          id: 1,
-          nombre: "Entrega de agendas",
-          lugar: "Patio",
-          fecha: "2024-04-22",
-          tipo: "Entrega",
-        },
-        {
-          id: 2,
-          nombre: "Fiestas Patrias",
-          lugar: "Plaza",
-          fecha: "2024-09-12",
-          tipo: "Actividad",
-        },
-      ]);
+      const { data, error } = await supabase.from("eventos").select("*");
+
+      if (error) {
+        console.error("Error al obtener los eventos:", error.message);
+        return;
+      }
+
+      setEventos(data);
     };
+
     fetchEventos();
   }, []);
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-gray-700 mb-6">Calendario de Eventos</h2>
+      <h2 className="text-2xl font-bold text-gray-700 mb-6">
+        Calendario de Eventos
+      </h2>
       <ul className="space-y-4">
         {eventos.map((evento) => (
           <li
