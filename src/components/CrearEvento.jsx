@@ -5,7 +5,7 @@ const CrearEvento = () => {
   const [formData, setFormData] = useState({
     nombre: "",
     lugar: "",
-    fecha: "",
+    fecha: Date.now(),
     tipo: "",
   });
 

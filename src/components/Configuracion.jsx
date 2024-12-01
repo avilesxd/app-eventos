@@ -15,7 +15,7 @@ const Configuracion = () => {
         const { data, error } = await supabase
           .from('configuraciones')
           .select('*')
-          .eq('usuario_id', supabase.auth.user()?.id) // Filtrar por usuario actual
+          .eq('usuario_id', supabase.auth.getUser.id) // Filtrar por usuario actual
           .single();
 
         if (error && error.code !== 'PGRST116') { // Ignorar error si no hay configuración inicial
@@ -37,7 +37,7 @@ const Configuracion = () => {
   const saveConfiguracion = async (newConfig) => {
     setLoading(true);
     try {
-      const usuarioId = supabase.auth.user()?.id;
+      const usuarioId = supabase.auth.getUser.id;
 
       if (!usuarioId) {
         throw new Error('Usuario no autenticado');
