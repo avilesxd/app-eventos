@@ -6,7 +6,7 @@ import Auth from "../components/Auth";
 import Dashboard from "../components/Dashboard";
 
 const App = () => {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState("" as unknown);
 
   useEffect(() => {
     const fetchSession = async () => {
