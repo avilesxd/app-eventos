@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { supabase } from "../utils/supabase/supabaseClient";
+import LogoDae from "./LogoDae";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -30,6 +31,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <div><LogoDae className="mb-6" /></div>
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
           {isLogin ? "Iniciar Sesión" : "Registrarse"}
         </h2>
