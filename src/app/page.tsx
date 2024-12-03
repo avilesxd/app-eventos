@@ -15,7 +15,6 @@ const App = () => {
         error,
       } = await supabase.auth.getSession();
 
-      console.log("Session:", session);
       if (error) {
         console.error("Error al obtener sesión:", error);
       } else {
@@ -27,7 +26,6 @@ const App = () => {
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        console.log("Session changed:", session);
         setSession(session);
       }
     );

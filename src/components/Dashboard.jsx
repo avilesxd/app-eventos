@@ -6,6 +6,7 @@ import Asistentes from "../components/Asistentes";
 import Configuracion from "../components/Configuracion";
 import Soporte from "../components/Soporte";
 import SignOutButton from "../components/SignOutButton";
+import LogoDae from "../components/LogoDae";
 
 const Dashboard = () => {
   const [activeMenu, setActiveMenu] = useState("Inicio");
@@ -39,6 +40,7 @@ const Dashboard = () => {
     <div className="flex h-screen font-sans">
       {/* Sidebar */}
       <div className="w-1/5 bg-green-700 text-white p-6 shadow-lg">
+        <LogoDae className="mb-6" />
         <h1 className="text-2xl font-bold mb-6">Menú</h1>
         <ul className="space-y-4">
           <li
