@@ -11,7 +11,6 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isLogin) {
-      // Login
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -22,7 +21,6 @@ const Auth = () => {
         window.location.href = "/";
       }
     } else {
-      // Registro
       const { error } = await supabase.auth.signUp({ email, password });
       if (error) alert("Error al registrarte: " + error.message);
       else alert("Registro exitoso. Por favor verifica tu correo.");

@@ -3,30 +3,28 @@ import { supabase } from "../utils/supabase/supabaseClient";
 
 const Asistentes = () => {
   const [asistentes, setAsistentes] = useState([]);
-  const [loading, setLoading] = useState(true); // Estado de carga
-  const [currentPage, setCurrentPage] = useState(1); // Página actual
-  const [totalPages, setTotalPages] = useState(1); // Total de páginas
-  const pageSize = 10; // Cantidad de asistentes por página
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 10;
 
   useEffect(() => {
     const fetchAsistentes = async () => {
       try {
         setLoading(true);
 
-        // Determinar rango de datos para la página actual
         const from = (currentPage - 1) * pageSize;
         const to = from + pageSize - 1;
 
-        // Consulta con paginación
         const { data, error, count } = await supabase
           .from("asistentes")
-          .select("*", { count: "exact" }) // Incluye el total de registros
+          .select("*", { count: "exact" })
           .range(from, to);
 
         if (error) throw new Error(error.message);
 
         setAsistentes(data);
-        setTotalPages(Math.ceil(count / pageSize)); // Calcular total de páginas
+        setTotalPages(Math.ceil(count / pageSize));
       } catch (error) {
         console.error("Error al obtener asistentes:", error.message);
       } finally {
@@ -35,7 +33,7 @@ const Asistentes = () => {
     };
 
     fetchAsistentes();
-  }, [currentPage]); // Ejecutar efecto al cambiar la página actual
+  }, [currentPage]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {

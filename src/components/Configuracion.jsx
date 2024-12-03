@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../utils/supabase/supabaseClient'; // Cliente de Supabase configurado
+import { supabase } from '../utils/supabase/supabaseClient';
 
 const Configuracion = () => {
   const [config, setConfig] = useState({
@@ -8,17 +8,16 @@ const Configuracion = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  // Cargar configuraciones al montar el componente
   useEffect(() => {
     const fetchConfiguracion = async () => {
       try {
         const { data, error } = await supabase
           .from('configuraciones')
           .select('*')
-          .eq('usuario_id', supabase.auth.getUser.id) // Filtrar por usuario actual
+          .eq('usuario_id', supabase.auth.getUser.id) 
           .single();
 
-        if (error && error.code !== 'PGRST116') { // Ignorar error si no hay configuración inicial
+        if (error && error.code !== 'PGRST116') { 
           throw error;
         }
 
@@ -33,7 +32,6 @@ const Configuracion = () => {
     fetchConfiguracion();
   }, []);
 
-  // Guardar configuraciones en la base de datos
   const saveConfiguracion = async (newConfig) => {
     setLoading(true);
     try {
@@ -60,7 +58,6 @@ const Configuracion = () => {
     }
   };
 
-  // Manejadores para los cambios
   const handleToggle = (e) => {
     const newConfig = { ...config, notificaciones: e.target.checked };
     setConfig(newConfig);

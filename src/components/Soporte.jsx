@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '../utils/supabase/supabaseClient'; // Asegúrate de tener configurado el cliente
+import { supabase } from '../utils/supabase/supabaseClient';
 
 const Soporte = () => {
   const [formData, setFormData] = useState({ asunto: '', descripcion: '' });
@@ -21,7 +21,7 @@ const Soporte = () => {
       }
 
       alert('Tu solicitud de soporte ha sido enviada exitosamente.');
-      setFormData({ asunto: '', descripcion: '' }); // Resetea el formulario
+      setFormData({ asunto: '', descripcion: '' });
     } catch (error) {
       console.error('Error al enviar la solicitud de soporte:', error.message);
       alert('Hubo un problema al enviar tu solicitud. Inténtalo nuevamente.');

@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../utils/supabase/supabaseClient'; // Verifica que la ruta sea correcta
+import { supabase } from '../utils/supabase/supabaseClient';
 
 const ProximoEvento = () => {
   const [proximoEvento, setProximoEvento] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Conectar con Supabase para obtener el próximo evento
     const fetchProximoEvento = async () => {
       try {
-        // Consulta para obtener el evento más próximo
         const { data, error } = await supabase
-          .from('eventos') // Nombre de la tabla en Supabase
+          .from('eventos') 
           .select('*')
-          .order('fecha', { ascending: true }) // Ordenar por fecha en orden ascendente
-          .limit(1); // Solo traer el primer evento
-
+          .order('fecha', { ascending: true }) 
+          .limit(1); 
         if (error) throw new Error(error.message);
 
-        setProximoEvento(data[0]); // Asigna el evento más próximo
+        setProximoEvento(data[0]); 
       } catch (error) {
         console.error('Error al obtener el próximo evento:', error.message);
       } finally {
