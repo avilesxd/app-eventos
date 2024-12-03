@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { supabase } from "../utils/supabase/supabaseClient"; // Asegúrate de que la ruta sea correcta
+import { supabase } from "../utils/supabase/supabaseClient";
 
 const CrearEvento = () => {
   const [formData, setFormData] = useState({
     nombre: "",
     lugar: "",
-    fecha: Date.now(),
+    fecha: Date.now().toString(),
     tipo: "",
   });
 
@@ -20,9 +20,8 @@ const CrearEvento = () => {
     setLoading(true);
 
     try {
-      // Inserción de datos en la tabla "eventos"
       const { error } = await supabase
-        .from("eventos") // Nombre de la tabla en la base de datos
+        .from("eventos")
         .insert([
           {
             nombre: formData.nombre,
@@ -35,7 +34,6 @@ const CrearEvento = () => {
       if (error) throw new Error(error.message);
 
       alert("Evento creado exitosamente!");
-      // Limpiar formulario tras crear el evento
       setFormData({ nombre: "", lugar: "", fecha: "", tipo: "" });
     } catch (error) {
       console.error("Error al crear el evento:", error.message);
