@@ -7,6 +7,7 @@ import Configuracion from "../components/Configuracion";
 import Soporte from "../components/Soporte";
 import SignOutButton from "../components/SignOutButton";
 import LogoDae from "../components/LogoDae";
+import LogoTomasino from "../components/LogoTomasino";
 
 const Dashboard = () => {
   const [activeMenu, setActiveMenu] = useState("Inicio");
@@ -125,6 +126,7 @@ const Dashboard = () => {
             <SignOutButton />
           </li>
         </ul>
+          <LogoTomasino className="mt-8" />
       </div>
 
       {/* Content */}
