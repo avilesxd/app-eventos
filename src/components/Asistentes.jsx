@@ -3,53 +3,108 @@ import { supabase } from "../utils/supabase/supabaseClient";
 
 const Asistentes = () => {
   const [asistentes, setAsistentes] = useState([]);
-  const [loading, setLoading] = useState(true); // Para manejar el estado de carga
+  const [loading, setLoading] = useState(true); // Estado de carga
+  const [currentPage, setCurrentPage] = useState(1); // Página actual
+  const [totalPages, setTotalPages] = useState(1); // Total de páginas
+  const pageSize = 10; // Cantidad de asistentes por página
 
   useEffect(() => {
     const fetchAsistentes = async () => {
       try {
-        setLoading(true); // Activar estado de carga
+        setLoading(true);
 
-        // Consulta a la tabla "asistentes" en Supabase
-        const { data, error } = await supabase.from("asistentes").select("*");
+        // Determinar rango de datos para la página actual
+        const from = (currentPage - 1) * pageSize;
+        const to = from + pageSize - 1;
+
+        // Consulta con paginación
+        const { data, error, count } = await supabase
+          .from("asistentes")
+          .select("*", { count: "exact" }) // Incluye el total de registros
+          .range(from, to);
 
         if (error) throw new Error(error.message);
 
-        // Guardar los asistentes obtenidos
         setAsistentes(data);
+        setTotalPages(Math.ceil(count / pageSize)); // Calcular total de páginas
       } catch (error) {
         console.error("Error al obtener asistentes:", error.message);
       } finally {
-        setLoading(false); // Desactivar estado de carga
+        setLoading(false);
       }
     };
 
     fetchAsistentes();
-  }, []);
+  }, [currentPage]); // Ejecutar efecto al cambiar la página actual
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4">
+    <div className="flex flex-col bg-white shadow-md rounded-lg p-4">
       <h2 className="text-xl font-bold mb-4 text-gray-700">Asistentes</h2>
-      
+
       {loading ? (
         <p className="text-gray-500">Cargando asistentes...</p>
       ) : (
-        <ul className="space-y-2">
-          {asistentes.length > 0 ? (
-            asistentes.map((asistente) => (
-              <li
-                key={asistente.id}
-                className="p-2 border rounded-md bg-gray-50 hover:bg-gray-100"
-              >
-                <span className="font-bold text-green-600">{asistente.nombre}</span>
-                <br />
-                <span className="text-gray-500">{asistente.email}</span>
-              </li>
-            ))
-          ) : (
-            <p className="text-gray-500">No hay asistentes registrados.</p>
-          )}
-        </ul>
+        <>
+          <ul className="space-y-2">
+            {asistentes.length > 0 ? (
+              asistentes.map((asistente) => (
+                <li
+                  key={asistente.id}
+                  className="p-2 border rounded-md bg-gray-50 hover:bg-gray-100"
+                >
+                  <span className="font-bold text-green-600">
+                    {asistente.nombre}
+                  </span>
+                  <br />
+                  <span className="text-gray-500">{asistente.email}</span>
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500">No hay asistentes registrados.</p>
+            )}
+          </ul>
+
+          {/* Controles de paginación */}
+          <div className="flex justify-between items-center mt-4">
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded ${
+                currentPage === 1
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+            >
+              Anterior
+            </button>
+            <span className="text-gray-700">
+              Página {currentPage} de {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded ${
+                currentPage === totalPages
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+            >
+              Siguiente
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
