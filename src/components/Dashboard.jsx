@@ -65,7 +65,7 @@ const Dashboard = () => {
             onClick={() => setShowEventosSubmenu(!showEventosSubmenu)}
             className="flex gap-2 cursor-pointer p-2 rounded-md hover:bg-green-800 flex justify-between items-center"
           >
-            <ListChecks /> <span>Eventos</span>
+             <span className="flex gap-2"><ListChecks />Eventos</span>
             <span
               className={`transition-transform ${
                 showEventosSubmenu ? "rotate-90" : ""
