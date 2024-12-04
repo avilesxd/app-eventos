@@ -8,6 +8,16 @@ import Soporte from "../components/Soporte";
 import SignOutButton from "../components/SignOutButton";
 import LogoDae from "../components/LogoDae";
 import LogoTomasino from "../components/LogoTomasino";
+import {
+  CalendarClock,
+  CalendarDays,
+  CalendarSearch,
+  House,
+  ListChecks,
+  Settings,
+  Users,
+  Wrench,
+} from "lucide-react";
 
 const Dashboard = () => {
   const [activeMenu, setActiveMenu] = useState("Inicio");
@@ -40,23 +50,22 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen font-sans">
       {/* Sidebar */}
-      <div className="w-1/5 bg-green-700 text-white p-6 shadow-lg">
+      <div className="w-1/5 flex flex-col bg-green-700 text-white p-6 shadow-lg">
         <LogoDae className="mb-6" />
-        <h1 className="text-2xl font-bold mb-6">Menú</h1>
         <ul className="space-y-4">
           <li
             onClick={() => setActiveMenu("Inicio")}
-            className={`cursor-pointer p-2 rounded-md hover:bg-green-800 ${
+            className={`flex gap-2 cursor-pointer  duration-300 p-2 rounded-md hover:bg-green-800 ${
               activeMenu === "Inicio" ? "bg-green-800" : ""
             }`}
           >
-            Inicio
+            <House /> Inicio
           </li>
           <li
             onClick={() => setShowEventosSubmenu(!showEventosSubmenu)}
-            className="cursor-pointer p-2 rounded-md hover:bg-green-800 flex justify-between items-center"
+            className="flex gap-2 cursor-pointer p-2 rounded-md hover:bg-green-800 flex justify-between items-center"
           >
-            <span>Eventos</span>
+            <ListChecks /> <span>Eventos</span>
             <span
               className={`transition-transform ${
                 showEventosSubmenu ? "rotate-90" : ""
@@ -69,53 +78,53 @@ const Dashboard = () => {
             <ul className="pl-4 space-y-2">
               <li
                 onClick={() => setActiveMenu("Crear Evento")}
-                className={`cursor-pointer p-2 rounded-md hover:bg-green-800 ${
+                className={`flex gap-2 cursor-pointer p-2 rounded-md hover:bg-green-800 ${
                   activeMenu === "Crear Evento" ? "bg-green-800" : ""
                 }`}
               >
-                Crear Evento
+                <CalendarClock /> Crear Evento
               </li>
               <li
                 onClick={() => setActiveMenu("Próximo Evento")}
-                className={`cursor-pointer p-2 rounded-md hover:bg-green-800 ${
+                className={`flex gap-2 cursor-pointer p-2 rounded-md hover:bg-green-800 ${
                   activeMenu === "Próximo Evento" ? "bg-green-800" : ""
                 }`}
               >
-                Próximo Evento
+                <CalendarSearch /> Próximo Evento
               </li>
               <li
                 onClick={() => setActiveMenu("Calendario")}
-                className={`cursor-pointer p-2 rounded-md hover:bg-green-800 ${
+                className={`flex gap-2 cursor-pointer p-2 rounded-md hover:bg-green-800 ${
                   activeMenu === "Calendario" ? "bg-green-800" : ""
                 }`}
               >
-                Calendario
+                <CalendarDays /> Calendario
               </li>
             </ul>
           )}
           <li
             onClick={() => setActiveMenu("Asistentes")}
-            className={`cursor-pointer p-2 rounded-md hover:bg-green-800 ${
+            className={`flex gap-2 cursor-pointer p-2 rounded-md hover:bg-green-800 ${
               activeMenu === "Asistentes" ? "bg-green-800" : ""
             }`}
           >
-            Asistentes
+            <Users /> Asistentes
           </li>
           <li
             onClick={() => setActiveMenu("Configuración")}
-            className={`cursor-pointer p-2 rounded-md hover:bg-green-800 ${
+            className={`flex gap-2 cursor-pointer p-2 rounded-md hover:bg-green-800 ${
               activeMenu === "Configuración" ? "bg-green-800" : ""
             }`}
           >
-            Configuración
+            <Settings /> Configuración
           </li>
           <li
             onClick={() => setActiveMenu("Soporte")}
-            className={`cursor-pointer p-2 rounded-md hover:bg-green-800 ${
+            className={`flex gap-2 cursor-pointer p-2 rounded-md hover:bg-green-800 ${
               activeMenu === "Soporte" ? "bg-green-800" : ""
             }`}
           >
-            Soporte
+            <Wrench /> Soporte
           </li>
           <li
             onClick={() => setActiveMenu("Cerrar Sesi&oacute;n")}
@@ -126,13 +135,13 @@ const Dashboard = () => {
             <SignOutButton />
           </li>
         </ul>
-          <LogoTomasino className="mt-8" />
+        <LogoTomasino className="mt-8" />
       </div>
 
       {/* Content */}
       <div className="w-4/5 bg-gray-100 p-6">{renderComponent()}</div>
     </div>
   );
-}
+};
 
-export default Dashboard
+export default Dashboard;
