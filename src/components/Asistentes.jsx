@@ -35,15 +35,22 @@ const Asistentes = () => {
     fetchAsistentes();
   }, [currentPage]);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  const handleConfirmarAsistencia = async (id) => {
+    try {
+      const { error } = await supabase
+        .from("asistentes")
+        .update({ confirmado: true })
+        .eq("id", id);
+      
+      if (error) throw new Error(error.message);
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setAsistentes((prevAsistentes) =>
+        prevAsistentes.map((asistente) =>
+          asistente.id === id ? { ...asistente, confirmado: true } : asistente
+        )
+      );
+    } catch (error) {
+      console.error("Error al confirmar asistencia:", error.message);
     }
   };
 
@@ -60,13 +67,28 @@ const Asistentes = () => {
               asistentes.map((asistente) => (
                 <li
                   key={asistente.id}
-                  className="p-2 border rounded-md bg-gray-50 hover:bg-gray-100"
+                  className="p-2 border rounded-md bg-gray-50 hover:bg-gray-100 flex justify-between items-center"
                 >
-                  <span className="font-bold text-green-600">
-                    {asistente.nombre}
-                  </span>
-                  <br />
-                  <span className="text-gray-500">{asistente.email}</span>
+                  <div>
+                    <span className="font-bold text-green-600">
+                      {asistente.nombre}
+                    </span>
+                    <br />
+                    <span className="text-gray-500">{asistente.email}</span>
+                  </div>
+                  <button
+                    onClick={() => handleConfirmarAsistencia(asistente.id)}
+                    disabled={asistente.confirmado}
+                    className={`px-4 py-2 rounded-full text-white ${
+                      asistente.confirmado
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-gradient-to-r from-green-400 to-green-600 hover:shadow-lg"
+                    } transition-all duration-200`}
+                  >
+                    {asistente.confirmado
+                      ? "Asistencia confirmada"
+                      : "Confirmar asistencia"}
+                  </button>
                 </li>
               ))
             ) : (
@@ -77,7 +99,7 @@ const Asistentes = () => {
           {/* Controles de paginación */}
           <div className="flex justify-between items-center mt-4">
             <button
-              onClick={handlePreviousPage}
+              onClick={() => setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
               className={`px-4 py-2 rounded ${
                 currentPage === 1
@@ -91,7 +113,7 @@ const Asistentes = () => {
               Página {currentPage} de {totalPages}
             </span>
             <button
-              onClick={handleNextPage}
+              onClick={() => setCurrentPage(currentPage + 1)}
               disabled={currentPage === totalPages}
               className={`px-4 py-2 rounded ${
                 currentPage === totalPages
